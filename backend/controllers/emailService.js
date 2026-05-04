@@ -9,8 +9,10 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+// function to send appointment approval email
 const sendAppointmentApproved = async (visitorEmail, visitorName, date) => {
     try {
+        // send email to visitor
         await transporter.sendMail({
             from: process.env.EMAIL_USER,
             to: visitorEmail,
@@ -21,6 +23,7 @@ const sendAppointmentApproved = async (visitorEmail, visitorName, date) => {
                 <p>Your appointment has been approved.</p>
                 <p>Date: ${new Date(date).toLocaleDateString()}</p>
                 <p>Please bring a valid ID when you arrive.</p>
+                <p>Thank you!</p>
             `
         });
         console.log('Email sent to:', visitorEmail);
@@ -29,6 +32,7 @@ const sendAppointmentApproved = async (visitorEmail, visitorName, date) => {
     }
 };
 
+// function to send appointment rejection email
 const sendAppointmentRejected = async (visitorEmail, visitorName) => {
     try {
         await transporter.sendMail({
@@ -39,7 +43,8 @@ const sendAppointmentRejected = async (visitorEmail, visitorName) => {
                 <h2>Appointment Update</h2>
                 <p>Dear ${visitorName},</p>
                 <p>Unfortunately your appointment has been rejected.</p>
-                <p>Please contact us for more information.</p>
+                <p>Please contact us for any query or more information.</p>
+                <p>Thank you!</p>
             `
         });
         console.log('Email sent to:', visitorEmail);

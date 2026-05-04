@@ -4,33 +4,35 @@ const User = require('./models/User');
 
 dotenv.config();
 
+// Sample seed data for users   
 const seedData = [
     {
-        name: 'Admin User',
-        email: 'admin@vps.com',
-        password: 'Admin@123',
+        name: 'Gyanwi Gupta',
+        email: 'gyanwi17gupta@gmail.com',
+        password: 'gg@123',
         role: 'admin'
     },
     {
-        name: 'Security Guard',
-        email: 'security@vps.com',
-        password: 'Admin@123',
+        name: 'Rupak Saha',
+        email: 'rs@gmail.com',
+        password: 'rs@123',
         role: 'security'
     },
     {
-        name: 'John Employee',
-        email: 'employee@vps.com',
-        password: 'Admin@123',
+        name: 'P. Shruthi',
+        email: 'ps@gmail.com',
+        password: 'ps@123',
         role: 'employee'
     },
     {
-        name: 'Jane Visitor',
-        email: 'visitor@vps.com',
-        password: 'Admin@123',
+        name: 'R. Gupta',
+        email: 'rg@gmail.com',
+        password: 'rg@123',
         role: 'visitor'
     }
 ];
 
+// Function to seed the database    
 const seedDB = async () => {
     try {
         await mongoose.connect(process.env.MONGO_URI);
@@ -38,19 +40,12 @@ const seedDB = async () => {
 
         // clear existing users
         await User.deleteMany();
-        console.log('Cleared existing users');
 
         // create one by one so pre('save') hook runs and hashes password
-        await User.create({ name: 'Admin User', email: 'admin@vps.com', password: 'Admin@123', role: 'admin' });
-        await User.create({ name: 'Security Guard', email: 'security@vps.com', password: 'Admin@123', role: 'security' });
-        await User.create({ name: 'John Employee', email: 'employee@vps.com', password: 'Admin@123', role: 'employee' });
-        await User.create({ name: 'Jane Visitor', email: 'visitor@vps.com', password: 'Admin@123', role: 'visitor' });
-
-        console.log('Demo users created successfully');
-        console.log('Admin    → admin@vps.com / Admin@123');
-        console.log('Security → security@vps.com / Admin@123');
-        console.log('Employee → employee@vps.com / Admin@123');
-        console.log('Visitor  → visitor@vps.com / Admin@123');
+        await User.create({ name: 'Gyanwi Gupta', email: 'gyanwi17gupta@gmail.com', password: 'gg@123', role: 'admin' });
+        await User.create({ name: 'Rupak Saha', email: 'rs@gmail.com', password: 'rs@123', role: 'security' });
+        await User.create({ name: 'P. Shruthi', email: 'ps@gmail.com', password: 'ps@123', role: 'employee' });
+        await User.create({ name: 'R. Gupta', email: 'rg@gmail.com', password: 'rg@123', role: 'visitor' });
 
         process.exit(0);
     } catch (error) {

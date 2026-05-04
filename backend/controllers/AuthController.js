@@ -1,8 +1,8 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
+// User registration
 const registerUser = async (req, res) => {
-    // Implementation for user registration
     const { name, email, password, role } = req.body;
     try {
         const existingUser = await User.findOne({ email });
@@ -17,14 +17,15 @@ const registerUser = async (req, res) => {
     }
 }
 
+// User login 
 const loginUser = async (req, res) => {
-    // Implementation for user login
     const { email, password } = req.body;
     try {
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(400).json({ error: "Invalid email or password" });
         }
+        // Compare the provided password with the hashed password in the database
         const isMatch = await user.comparePassword(password);
         if (!isMatch) {
             return res.status(400).json({ error: "Invalid email or password" });

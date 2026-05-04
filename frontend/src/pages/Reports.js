@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 
+// reports page component
 export default function Reports() {
     const [summary, setSummary] = useState(null);
     const [visitors, setVisitors] = useState([]);
@@ -8,10 +9,12 @@ export default function Reports() {
     const [activeTab, setActiveTab] = useState('summary');
     const token = localStorage.getItem('token');
 
+    // fetch summary data
     useEffect(() => {
         fetchSummary();
     }, []);
 
+    // fetch summary report
     const fetchSummary = async () => {
         const res = await fetch('http://localhost:5000/api/reports/summary', {
             headers: { Authorization: `Bearer ${token}` }
@@ -20,6 +23,7 @@ export default function Reports() {
         setSummary(data);
     };
 
+    // fetch visitors report
     const fetchVisitors = async () => {
         const res = await fetch('http://localhost:5000/api/reports/visitors', {
             headers: { Authorization: `Bearer ${token}` }
@@ -28,6 +32,7 @@ export default function Reports() {
         setVisitors(data);
     };
 
+    // fetch passes report
     const fetchPasses = async () => {
         const res = await fetch('http://localhost:5000/api/reports/passes', {
             headers: { Authorization: `Bearer ${token}` }
@@ -36,6 +41,7 @@ export default function Reports() {
         setPasses(data);
     };
 
+    // fetch appointments report
     const fetchAppointments = async () => {
         const res = await fetch('http://localhost:5000/api/reports/appointments', {
             headers: { Authorization: `Bearer ${token}` }
@@ -44,6 +50,7 @@ export default function Reports() {
         setAppointments(data);
     };
 
+    // handle tab change
     const handleTab = (tab) => {
         setActiveTab(tab);
         if (tab === 'visitors') fetchVisitors();
@@ -51,6 +58,7 @@ export default function Reports() {
         if (tab === 'appointments') fetchAppointments();
     };
 
+    // export data as CSV
     const exportCSV = (data, filename) => {
         if (data.length === 0) return;
 

@@ -1,5 +1,6 @@
 const Visitor=require('../models/Visitor');
 
+// Create a new visitor
 const createVisitor=async(req,res)=>{
     try{
         const { name, email, phone, company, purpose } = req.body;
@@ -11,6 +12,7 @@ const createVisitor=async(req,res)=>{
     }
 };
 
+//  Get all visitors
 const getVisitors=async(req,res)=>{
     try{
         const visitors=await Visitor.find();
@@ -20,6 +22,7 @@ const getVisitors=async(req,res)=>{
     }
 };
 
+// Get visitor by ID
 const getVisitorById=async(req,res)=>{
     try{
         const visitor=await Visitor.findById(req.params.id);
@@ -32,6 +35,7 @@ const getVisitorById=async(req,res)=>{
     }
 };
 
+// Approve a visitor
 const approveVisitor = async (req, res) => {
     try {
         const visitor = await Visitor.findByIdAndUpdate(
@@ -48,13 +52,10 @@ const approveVisitor = async (req, res) => {
     }
 };
 
+// Reject a visitor
 const rejectVisitor = async (req, res) => {
     try {
-        const visitor = await Visitor.findByIdAndUpdate(
-            req.params.id,
-            { status: 'rejected' },
-            { new: true }
-        );
+        const visitor = await Visitor.findByIdAndUpdate(req.params.id,{ status: 'rejected' },{ new: true });
         if (!visitor) {
             return res.status(404).json({ message: 'Visitor not found' });
         }

@@ -1,6 +1,7 @@
 const Appointment=require('../models/Appointment');
 const { sendAppointmentApproved, sendAppointmentRejected } = require('./emailService');
 
+// Create a new appointment
 const createAppointment=async(req,res)=>{
     try{
         const {visitorName,visitorEmail,visitorPhone,purpose,date} = req.body;
@@ -11,6 +12,7 @@ const createAppointment=async(req,res)=>{
     }
 };
 
+// Get all appointments for the logged-in host
 const getAppointments=async(req,res)=>{
     try{
         const appointments=await Appointment.find({ hostId: req.user._id });
@@ -20,6 +22,7 @@ const getAppointments=async(req,res)=>{
     }
 };
 
+// Get an appointment by ID
 const getAppointmentById=async(req,res)=>{
     try{
         const appointment=await Appointment.findById(req.params.id);
@@ -32,13 +35,10 @@ const getAppointmentById=async(req,res)=>{
     }
 };
 
+// Approve an appointment
 const approveAppointment = async (req, res) => {
     try {
-        const appointment = await Appointment.findByIdAndUpdate(
-            req.params.id,
-            { status: 'approved' },
-            { new: true }
-        );
+        const appointment = await Appointment.findByIdAndUpdate(req.params.id,{ status: 'approved' },{ new: true });
         if (!appointment) {
             return res.status(404).json({ message: 'Appointment not found' });
         }
@@ -49,13 +49,10 @@ const approveAppointment = async (req, res) => {
     }
 };
 
+// Reject an appointment
 const rejectAppointment = async (req, res) => {
     try {
-        const appointment = await Appointment.findByIdAndUpdate(
-            req.params.id,
-            { status: 'rejected' },
-            { new: true }
-        );
+        const appointment = await Appointment.findByIdAndUpdate(req.params.id,{ status: 'rejected' },{ new: true });
         if (!appointment) {
             return res.status(404).json({ message: 'Appointment not found' });
         }

@@ -16,10 +16,17 @@ A MERN stack application to manage visitor passes digitally.
     npm start
 
 ## Demo Accounts
-- Admin: admin@vps.com / Admin@123
-- Security: security@vps.com / Admin@123
-- Employee: employee@vps.com / Admin@123
-- Visitor: visitor@vps.com / Admin@123
+- Admin: gyanwi17gupta@gmail.com / gg@123
+- Security: rs@gmail.com / rs@123
+- Employee: ps@gmail.com / ps@123
+- Visitor: rg@gmail.com / rg@123
+
+## Environmental Variables Used
+- PORT
+- MONGO_URI
+- SECRET_KEY
+- EMAIL_USER
+- EMAIL_PASS
 
 ## Features
 1. JWT Authentication with role-based access

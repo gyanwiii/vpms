@@ -7,6 +7,7 @@ const requireAuth= async(req,res,next) =>{
     if(!authorization){
         return res.status(401).json({error:"Authentication token required"})
     }
+    // Bearer token
     const token = authorization.split(' ')[1];
     if(!token){
         return res.status(401).json({error:"Invalid authentication token"})
@@ -21,10 +22,11 @@ const requireAuth= async(req,res,next) =>{
     }
 }
 
+//To allow access to specific roles
 const allowRoles=(...roles)=>{
     return(req,res,next)=>{
         if(!roles.includes(req.user.role)){
-            return res.status(403).json({error:"You do not have permission"});
+            return res.status(403).json({error:"Permission denied"});
         }
         next();
     };

@@ -1,7 +1,9 @@
+//pdfkit for generating pdfs, fs for file handling, path for handling file paths
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
 const path = require('path');
 
+// Function to generate PDF for a visitor pass
 const generatePDF = async (pass, visitor) => {
     // create uploads/badges folder if it doesn't exist
     const dir = path.join(__dirname, '../uploads/badges');
@@ -9,6 +11,7 @@ const generatePDF = async (pass, visitor) => {
         fs.mkdirSync(dir, { recursive: true });
     }
 
+    // create unique filename for the PDF
     const filename = `badge-${pass.passNo}.pdf`;
     const filepath = path.join(dir, filename);
 
@@ -34,12 +37,6 @@ const generatePDF = async (pass, visitor) => {
         // valid date
         doc.text(`Valid Until: ${new Date(pass.validDate).toLocaleDateString()}`);
         doc.moveDown();
-
-        // qr code image
-        // qrCode is a base64 data URL — convert to buffer
-        const base64Data = pass.qrCode.replace(/^data:image\/png;base64,/, '');
-        const qrBuffer = Buffer.from(base64Data, 'base64');
-        doc.image(qrBuffer, { fit: [150, 150], align: 'center' });
 
         doc.end();
 

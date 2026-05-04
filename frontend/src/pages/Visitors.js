@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 
+// visitors management page
 export default function Visitors() {
     const [visitors, setVisitors] = useState([]);
     const [error, setError] = useState('');
@@ -15,10 +16,12 @@ export default function Visitors() {
         v.name.toLowerCase().includes(search.toLowerCase()) || v.email.toLowerCase().includes(search.toLowerCase())
     );
 
+    // fetch visitors 
     useEffect(() => {
         fetchVisitors();
     }, []);
 
+    // fetch all visitors from backend
     const fetchVisitors = async () => {
         try {
             const res = await fetch('http://localhost:5000/api/visitors', {
@@ -35,6 +38,7 @@ export default function Visitors() {
         }
     };
 
+    // handle visitor registration
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
@@ -59,6 +63,7 @@ export default function Visitors() {
         }
     };
 
+    // handle approve action for pending visitors
     const handleApprove = async (id) => {
         await fetch(`http://localhost:5000/api/visitors/${id}/approve`, {
             method: 'PUT',
@@ -67,6 +72,7 @@ export default function Visitors() {
         fetchVisitors();
     };
 
+    // handle reject action for pending visitors
     const handleReject = async (id) => {
         await fetch(`http://localhost:5000/api/visitors/${id}/reject`, {
             method: 'PUT',

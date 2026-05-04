@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 
+//passes management 
 export default function Passes() {
     const [passes, setPasses] = useState([]);
     const [visitorId, setVisitorId] = useState('');
@@ -12,6 +13,7 @@ export default function Passes() {
         fetchPasses();
     }, []);
 
+    // fetch all passes from backend
     const fetchPasses = async () => {
         try {
             const res = await fetch('http://localhost:5000/api/passes', {
@@ -28,6 +30,7 @@ export default function Passes() {
         }
     };
 
+    // create new pass
     const handleCreate = async (e) => {
         e.preventDefault();
         try {
@@ -52,6 +55,7 @@ export default function Passes() {
         }
     };
 
+    // check-in pass
     const handleCheckin = async (id) => {
         await fetch(`http://localhost:5000/api/passes/${id}/checkin`, {
             method: 'PUT',
@@ -60,6 +64,7 @@ export default function Passes() {
         fetchPasses();
     };
 
+    // check-out pass
     const handleCheckout = async (id) => {
         await fetch(`http://localhost:5000/api/passes/${id}/checkout`, {
             method: 'PUT',
@@ -68,6 +73,7 @@ export default function Passes() {
         fetchPasses();
     };
 
+    // revoke pass (admin only)
     const handleRevoke = async (id) => {
         await fetch(`http://localhost:5000/api/passes/${id}/revoke`, {
             method: 'PUT',

@@ -6,13 +6,7 @@ export default function Navbar() {
     const { user } = useAuthContext();
 
     return (
-        <nav style={{
-            background: '#333',
-            padding: '10px 20px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-        }}>
+        <nav style={{background: '#333',padding: '10px 20px',display: 'flex',justifyContent: 'space-between',alignItems: 'center'}}>
             <div>
                 <a href="/dashboard" style={{ color: 'white', marginRight: '15px', textDecoration: 'none' }}>Dashboard</a>
                 {(user?.role === 'admin' || user?.role === 'security' || user?.role === 'employee') && (

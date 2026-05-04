@@ -8,6 +8,7 @@ export default function Dashboard() {
     const user = JSON.parse(localStorage.getItem('user'));
     const token = localStorage.getItem('token');
 
+    // fetch summary data
     useEffect(() => {
         const fetchSummary = async () => {
             try {
@@ -27,6 +28,7 @@ export default function Dashboard() {
         fetchSummary();
     }, []);
 
+    // handle logout
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
@@ -35,7 +37,6 @@ export default function Dashboard() {
 
     return (
         <div style={{ padding: '20px' }}>
-
             {summary && (
                 <div>
                     <h3>Summary</h3>

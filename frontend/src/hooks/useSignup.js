@@ -6,6 +6,7 @@ export const useSignup = () => {
     const [isLoading, setIsLoading] = useState(false);
     const { dispatch } = useAuthContext();
 
+    // signup function to call backend API
     const signup = async (name, email, password, role) => {
         setIsLoading(true);
         setError(null);
@@ -23,9 +24,11 @@ export const useSignup = () => {
             setError(data.error);
             return;
         }
-
+        // save to localStorage
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
+
+        // update auth context
         dispatch({ type: 'LOGIN', payload: data.user });
         setIsLoading(false);
     };

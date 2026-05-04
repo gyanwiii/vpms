@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 
+// my passes page component
 export default function MyPasses() {
     const [passes, setPasses] = useState([]);
     const [error, setError] = useState('');

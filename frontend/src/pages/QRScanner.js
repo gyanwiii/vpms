@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
+import jsQR from 'jsqr';
 
+// QR code scanner page component
 export default function QRScanner() {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
@@ -10,6 +12,7 @@ export default function QRScanner() {
     const [manualPassNo, setManualPassNo] = useState('');
     const token = localStorage.getItem('token');
 
+    // start camera and scanning
     const startCamera = async () => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
@@ -21,6 +24,7 @@ export default function QRScanner() {
         }
     };
 
+    // stop camera and scanning
     const stopCamera = () => {
         const stream = videoRef.current?.srcObject;
         if (stream) {
@@ -29,6 +33,7 @@ export default function QRScanner() {
         setScanning(false);
     };
 
+    // scan video frames for QR code
     useEffect(() => {
         let interval;
         if (scanning) {
@@ -50,7 +55,6 @@ export default function QRScanner() {
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const jsQR = require('jsqr');
         const code = jsQR(imageData.data, imageData.width, imageData.height);
         if (code) {
             setResult(code.data);
@@ -59,6 +63,7 @@ export default function QRScanner() {
         }
     };
 
+    // lookup pass by pass number
     const lookupPass = async (passNo) => {
         setError('');
         try {
@@ -77,6 +82,7 @@ export default function QRScanner() {
         }
     };
 
+    // handle check-in action
     const handleCheckin = async () => {
         await fetch(`http://localhost:5000/api/passes/${passData._id}/checkin`, {
             method: 'PUT',
@@ -85,6 +91,7 @@ export default function QRScanner() {
         setPassData({ ...passData, checkedIn: true });
     };
 
+    // handle check-out action
     const handleCheckout = async () => {
         await fetch(`http://localhost:5000/api/passes/${passData._id}/checkout`, {
             method: 'PUT',

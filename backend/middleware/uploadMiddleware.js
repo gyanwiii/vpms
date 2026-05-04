@@ -1,3 +1,4 @@
+// multer for handling file uploads
 const multer = require('multer');
 const path = require('path');
 
@@ -7,7 +8,6 @@ const storage = multer.diskStorage({
         cb(null, 'uploads/');
     },
     filename: function (req, file, cb) {
-        // example: photo-1714900000000.jpg
         cb(null, 'photo-' + Date.now() + path.extname(file.originalname));
     }
 });

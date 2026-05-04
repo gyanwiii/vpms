@@ -6,6 +6,7 @@ export const useLogin = () => {
     const [isLoading, setIsLoading] = useState(false);
     const { dispatch } = useAuthContext();
 
+    // login function to call backend API
     const login = async (email, password) => {
         setIsLoading(true);
         setError(null);
