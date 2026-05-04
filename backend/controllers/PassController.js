@@ -1,0 +1,94 @@
+const qrcode=require('qrcode');
+const Pass=require('../models/Pass');
+const CheckLog=require('../models/Checklog');
+const Visitor=require('../models/Visitor');
+const {generatePDF} = require('./pdfGenerator');
+
+const createPass = async (req, res) => {
+    try{
+        const {visitorId,validDate} = req.body;
+        const visitor = await Visitor.findById(visitorId);
+        if (!visitor) return res.status(404).json({ message: "Visitor not found" });
+        if (visitor.status !== 'approved') {
+            return res.status(400).json({ message: "Visitor must be approved first" });
+        }
+        const passNo = 'PASS' + Date.now();
+        const qrCode=await qrcode.toDataURL(passNo);
+        const newPass = await Pass.create({visitorId,validDate,qrCode,passNo,issuedBy: req.user._id});
+        
+        // Generate PDF for the new pass
+        const pdfPath = await generatePDF(newPass, visitor);
+        
+        res.status(201).json({ ...newPass._doc, pdfPath });
+    }catch(error){
+        res.status(400).json({message:error.message});
+    }
+};
+
+const getPasses = async (req, res) => {
+    try{
+        const passes = await Pass.find();
+        res.status(200).json(passes);
+    }catch(error){
+        res.status(400).json({message:error.message});
+    }
+};
+
+const getPassById = async (req, res) => {
+    try {
+        const passId = req.params.id;
+        const pass = await Pass.findById(passId);
+        if (!pass) {
+            return res.status(404).json({ message: "Pass not found" });
+        }
+        res.status(200).json(pass);
+    }catch(error){
+        res.status(400).json({message:error.message});
+    }
+};
+
+const checkin = async (req, res) => {
+    try {
+        const updatedPass = await Pass.findByIdAndUpdate(
+            req.params.id,
+            { checkedIn: true },
+            { new: true }
+        );
+        if (!updatedPass) return res.status(404).json({ message: "Pass not found" });
+        const checkLog = await CheckLog.create({ passId: updatedPass._id,visitorId: updatedPass.visitorId, action: 'checkin',performedBy: req.user._id });
+        res.status(200).json(updatedPass);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
+
+const checkout = async (req, res) => {
+    try {
+        const updatedPass = await Pass.findByIdAndUpdate(
+            req.params.id,
+            { checkedOut: true },
+            { new: true }
+        );
+        if (!updatedPass) return res.status(404).json({ message: "Pass not found" });
+        const checkLog = await CheckLog.create({ passId: updatedPass._id,visitorId: updatedPass.visitorId, action: 'checkout',performedBy: req.user._id });
+        res.status(200).json(updatedPass);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
+
+const revokePass = async (req, res) => {
+    try {
+        const updatedPass = await Pass.findByIdAndUpdate(
+            req.params.id,
+            { status: 'revoked' },
+            { new: true }
+        );
+        if (!updatedPass) return res.status(404).json({ message: "Pass not found" });
+        res.status(200).json(updatedPass);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
+
+module.exports = {createPass,getPasses,getPassById,checkin,checkout,revokePass};
