@@ -18,7 +18,7 @@ export default function Appointment() {
 
     const fetchAppointments = async () => {
         try {
-            const res = await fetch('http://localhost:5000/api/appointments', {
+            const res = await fetch('http://visitor-pass-management-9jme.onrender.com/api/appointments', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const data = await res.json();
@@ -35,7 +35,7 @@ export default function Appointment() {
     const handleCreate = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch('http://localhost:5000/api/appointments', {
+            const res = await fetch('http://visitor-pass-management-9jme.onrender.com/api/appointments', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ export default function Appointment() {
     };
 
     const handleApprove = async (id) => {
-        await fetch(`http://localhost:5000/api/appointments/${id}/approve`, {
+        await fetch(`http://visitor-pass-management-9jme.onrender.com/api/appointments/${id}/approve`, {
             method: 'PUT',
             headers: { Authorization: `Bearer ${token}` }
         });
@@ -64,7 +64,7 @@ export default function Appointment() {
     };
 
     const handleReject = async (id) => {
-        await fetch(`http://localhost:5000/api/appointments/${id}/reject`, {
+        await fetch(`http://visitor-pass-management-9jme.onrender.com/api/appointments/${id}/reject`, {
             method: 'PUT',
             headers: { Authorization: `Bearer ${token}` }
         });

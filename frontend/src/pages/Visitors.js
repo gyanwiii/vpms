@@ -27,7 +27,7 @@ export default function Visitors() {
     // fetch all visitors from backend
     const fetchVisitors = async () => {
         try {
-            const res = await fetch('http://localhost:5000/api/visitors', {
+            const res = await fetch('http:///api/visitors', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const data = await res.json();
@@ -54,7 +54,7 @@ export default function Visitors() {
             formData.append('purpose', purpose);
             if (photo) formData.append('photo', photo);
 
-            const res = await fetch('http://localhost:5000/api/visitors', {
+            const res = await fetch('http:///api/visitors', {
                 method: 'POST',
                 headers: {
                     // do NOT set Content-Type manually — browser sets it with boundary automatically
@@ -77,7 +77,7 @@ export default function Visitors() {
 
     // handle approve action for pending visitors
     const handleApprove = async (id) => {
-        await fetch(`http://localhost:5000/api/visitors/${id}/approve`, {
+        await fetch(`http:///api/visitors/${id}/approve`, {
             method: 'PUT',
             headers: { Authorization: `Bearer ${token}` }
         });
@@ -86,7 +86,7 @@ export default function Visitors() {
 
     // handle reject action for pending visitors
     const handleReject = async (id) => {
-        await fetch(`http://localhost:5000/api/visitors/${id}/reject`, {
+        await fetch(`http:///api/visitors/${id}/reject`, {
             method: 'PUT',
             headers: { Authorization: `Bearer ${token}` }
         });
@@ -172,7 +172,7 @@ export default function Visitors() {
                         <li key={visitor._id} className="row-card">
                             {visitor.photo ? (
                                 <img
-                                    src={`http://localhost:5000/uploads/${visitor.photo}`}
+                                    src={`http:///uploads/${visitor.photo}`}
                                     alt={visitor.name}
                                     className="row-avatar"
                                     style={{ objectFit: 'cover' }}

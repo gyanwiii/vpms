@@ -68,7 +68,7 @@ export default function QRScanner() {
     const lookupPass = async (passNo) => {
         setError('');
         try {
-            const res = await fetch('http://localhost:5000/api/passes', {
+            const res = await fetch('http://visitor-pass-management-9jme.onrender.com/api/passes', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const data = await res.json();
@@ -85,7 +85,7 @@ export default function QRScanner() {
 
     // handle check-in action
     const handleCheckin = async () => {
-        await fetch(`http://localhost:5000/api/passes/${passData._id}/checkin`, {
+        await fetch(`http://visitor-pass-management-9jme.onrender.com/api/passes/${passData._id}/checkin`, {
             method: 'PUT',
             headers: { Authorization: `Bearer ${token}` }
         });
@@ -94,7 +94,7 @@ export default function QRScanner() {
 
     // handle check-out action
     const handleCheckout = async () => {
-        await fetch(`http://localhost:5000/api/passes/${passData._id}/checkout`, {
+        await fetch(`http://visitor-pass-management-9jme.onrender.com/api/passes/${passData._id}/checkout`, {
             method: 'PUT',
             headers: { Authorization: `Bearer ${token}` }
         });

@@ -17,7 +17,7 @@ export default function Reports() {
 
     // fetch summary report
     const fetchSummary = async () => {
-        const res = await fetch('http://localhost:5000/api/reports/summary', {
+        const res = await fetch('http://visitor-pass-management-9jme.onrender.com/api/reports/summary', {
             headers: { Authorization: `Bearer ${token}` }
         });
         const data = await res.json();
@@ -26,7 +26,7 @@ export default function Reports() {
 
     // fetch visitors report
     const fetchVisitors = async () => {
-        const res = await fetch('http://localhost:5000/api/reports/visitors', {
+        const res = await fetch('http://visitor-pass-management-9jme.onrender.com/api/reports/visitors', {
             headers: { Authorization: `Bearer ${token}` }
         });
         const data = await res.json();
@@ -35,7 +35,7 @@ export default function Reports() {
 
     // fetch passes report
     const fetchPasses = async () => {
-        const res = await fetch('http://localhost:5000/api/reports/passes', {
+        const res = await fetch('http://visitor-pass-management-9jme.onrender.com/api/reports/passes', {
             headers: { Authorization: `Bearer ${token}` }
         });
         const data = await res.json();
@@ -44,7 +44,7 @@ export default function Reports() {
 
     // fetch appointments report
     const fetchAppointments = async () => {
-        const res = await fetch('http://localhost:5000/api/reports/appointments', {
+        const res = await fetch('http://visitor-pass-management-9jme.onrender.com/api/reports/appointments', {
             headers: { Authorization: `Bearer ${token}` }
         });
         const data = await res.json();

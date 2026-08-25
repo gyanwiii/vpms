@@ -10,7 +10,7 @@ export default function MyPasses() {
     useEffect(() => {
         const fetchMyPasses = async () => {
             try {
-                const res = await fetch('http://localhost:5000/api/passes', {
+                const res = await fetch('http://visitor-pass-management-9jme.onrender.com/api/passes', {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 const data = await res.json();

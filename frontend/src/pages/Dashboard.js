@@ -13,7 +13,7 @@ export default function Dashboard() {
     useEffect(() => {
         const fetchSummary = async () => {
             try {
-                const res = await fetch('http://localhost:5000/api/reports/summary', {
+                const res = await fetch('http://visitor-pass-management-9jme.onrender.com/api/reports/summary', {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 const data = await res.json();
