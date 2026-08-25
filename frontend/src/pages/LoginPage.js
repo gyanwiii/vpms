@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLogin } from '../hooks/useLogin';
 import { useNavigate } from 'react-router-dom';
+import { IconBadge, IconMail, IconLock, IconX } from '../components/Icons';
 
 // login page component
 const LoginPage = () => {
@@ -21,75 +22,49 @@ const LoginPage = () => {
     };
 
     return (
-        <div style={{ padding: '40px', maxWidth: '400px', margin: '0 auto' }}>
-            <div>
-                <h2 style={{ textAlign: 'center', marginBottom: '24px' }}>
-                    Login
-                </h2>
+        <div className="auth-wrap">
+            <div className="auth-card">
+                <div className="auth-brand">
+                    <span className="brand-mark"><IconBadge size={18} color="#fff" /></span>
+                    <span>Gatepass</span>
+                </div>
+                <h2>Welcome back</h2>
+                <p className="auth-subtitle">Sign in to manage visitors and access passes</p>
+
+                {/* {error && (
+                    <div className="alert alert-error">
+                        <IconX size={15} /> {error}
+                    </div>
+                )} */}
 
                 <form onSubmit={handleSubmit}>
-                    <div style={{ marginBottom: '16px' }}>
-                        <label style={{ display: 'block', marginBottom: '6px', fontWeight: 'bold' }}>
-                            Email
-                        </label>
+                    <div className="field" style={{ marginBottom: '14px' }}>
+                        <label><IconMail size={13} style={{ verticalAlign: '-2px', marginRight: '4px' }} />Email</label>
                         <input
                             type="email"
+                            placeholder="you@company.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            style={{
-                                width: '100%',
-                                padding: '10px',
-                                borderRadius: '6px',
-                                border: '1px solid #ccc',
-                                boxSizing: 'border-box'
-                            }}
                         />
                     </div>
 
-                    <div style={{ marginBottom: '20px' }}>
-                        <label style={{ display: 'block', marginBottom: '6px', fontWeight: 'bold' }}>
-                            Password
-                        </label>
+                    <div className="field" style={{ marginBottom: '20px' }}>
+                        <label><IconLock size={13} style={{ verticalAlign: '-2px', marginRight: '4px' }} />Password</label>
                         <input
                             type="password"
+                            placeholder="••••••••"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            style={{
-                                width: '100%',
-                                padding: '10px',
-                                borderRadius: '6px',
-                                border: '1px solid #ccc',
-                                boxSizing: 'border-box'
-                            }}
                         />
                     </div>
 
-                    <button
-                        type="submit"
-                        disabled={isLoading}
-                        style={{
-                            width: '100%',
-                            padding: '10px',
-                            backgroundColor: '#1677ff',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '6px',
-                            fontSize: '16px',
-                            cursor: isLoading ? 'not-allowed' : 'pointer'
-                        }}
-                    >
-                        {isLoading ? 'Logging in...' : 'Login'}
+                    <button type="submit" disabled={isLoading} className="btn btn-primary btn-full">
+                        {isLoading ? 'Signing in…' : 'Login'}
                     </button>
 
-                    {error && (
-                        <p style={{ color: 'red', textAlign: 'center', marginTop: '12px' }}>
-                            {error}
-                        </p>
-                    )}
-
-                    <p style={{ textAlign: 'center', marginTop: '16px' }}>
+                    <p className="auth-footer">
                         New visitor? <a href="/register">Register here</a>
                     </p>
                 </form>

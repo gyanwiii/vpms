@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { IconArrowLeft, IconSearch, IconUsers, IconCheck, IconX } from '../components/Icons';
 
 // visitors management page
 export default function Visitors() {
@@ -9,15 +10,16 @@ export default function Visitors() {
     const [phone, setPhone] = useState('');
     const [company, setCompany] = useState('');
     const [purpose, setPurpose] = useState('');
-    const [photo, setPhoto] = useState(null); // photo state for file upload
+    const [photo, setPhoto] = useState(null); 
+
     const token = localStorage.getItem('token');
     const user = JSON.parse(localStorage.getItem('user'));
     const [search, setSearch] = useState('');
-    const filtered = visitors.filter(v => 
+    const filtered = visitors.filter(v =>
         v.name.toLowerCase().includes(search.toLowerCase()) || v.email.toLowerCase().includes(search.toLowerCase())
     );
 
-    // fetch visitors 
+    // fetch visitors
     useEffect(() => {
         fetchVisitors();
     }, []);
@@ -91,73 +93,116 @@ export default function Visitors() {
         fetchVisitors();
     };
 
-    return (
-        <div style={{ padding: '20px' }}>
-            <a href="/dashboard">← Back to Dashboard</a>
-            <h2>Visitors</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+    const canModerate = user?.role === 'admin' || user?.role === 'security';
 
-            {/* Search bar */}
-            <input
-                placeholder="Search by name or email"
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                style={{ marginBottom: '20px', padding: '5px', width: '300px' }}
-            />
+    return (
+        <div className="page">
+            <a href="/dashboard" className="back-link"><IconArrowLeft size={14} /> Back to Dashboard</a>
+
+            <div className="page-header">
+                <div>
+                    <h1>Visitors</h1>
+                    <p className="page-subtitle">Register new visitors and manage approvals</p>
+                </div>
+                <div className="field" style={{ minWidth: '260px' }}>
+                    <div style={{ position: 'relative' }}>
+                        <IconSearch size={15} style={{ position: 'absolute', left: '12px', top: '11px', color: 'var(--text-faint)' }} />
+                        <input
+                            placeholder="Search by name or email"
+                            value={search}
+                            onChange={e => setSearch(e.target.value)}
+                            style={{ paddingLeft: '34px' }}
+                        />
+                    </div>
+                </div>
+            </div>
+
+            {/* {error && <div className="alert alert-error"><IconX size={15} /> {error}</div>} */}
 
             {/* Register form */}
-            <h3>Register New Visitor</h3>
-            <form onSubmit={handleRegister}>
-                <input placeholder="Name" value={name} onChange={e => setName(e.target.value)} required style={{ marginBottom: '8px' }} />
-                <input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required style={{ marginBottom: '8px' }} />
-                <input placeholder="Phone" value={phone} onChange={e => setPhone(e.target.value)} required style={{ marginBottom: '8px' }} />
-                <input placeholder="Company" value={company} onChange={e => setCompany(e.target.value)} style={{ marginBottom: '8px' }} />
-                <input placeholder="Purpose" value={purpose} onChange={e => setPurpose(e.target.value)} required style={{ marginBottom: '8px' }} />
-
-                {/* photo upload field */}
-                <label style={{ display: 'block', marginBottom: '4px' }}>Visitor Photo</label>
-                <input
-                    type="file"
-                    accept="image/*"
-                    onChange={e => setPhoto(e.target.files[0])}
-                    style={{ display: 'block', marginBottom: '8px' }}
-                />
-                {/* preview selected photo before submitting */}
-                {photo && (
-                    <img
-                        src={URL.createObjectURL(photo)}
-                        alt="preview"
-                        style={{ width: '100px', height: '100px', objectFit: 'cover', marginBottom: '12px', borderRadius: '6px' }}
-                    />
-                )}
-
-                <button type="submit">Register</button>
-            </form>
+            <div className="panel">
+                <div className="section-title">Register New Visitor</div>
+                <form onSubmit={handleRegister}>
+                    <div className="field-grid">
+                        <div className="field">
+                            <label>Name</label>
+                            <input placeholder="Full name" value={name} onChange={e => setName(e.target.value)} required />
+                        </div>
+                        <div className="field">
+                            <label>Email</label>
+                            <input placeholder="visitor@email.com" value={email} onChange={e => setEmail(e.target.value)} required />
+                        </div>
+                        <div className="field">
+                            <label>Phone</label>
+                            <input placeholder="+91 98765 43210" value={phone} onChange={e => setPhone(e.target.value)} required />
+                        </div>
+                        <div className="field">
+                            <label>Company</label>
+                            <input placeholder="Company (optional)" value={company} onChange={e => setCompany(e.target.value)} />
+                        </div>
+                        <div className="field">
+                            <label>Purpose</label>
+                            <input placeholder="Reason for visit" value={purpose} onChange={e => setPurpose(e.target.value)} required />
+                        </div>
+                        <div className="field">
+                            <label>Visitor Photo</label>
+                            <div className="file-drop">
+                                <input type="file" accept="image/*" onChange={e => setPhoto(e.target.files[0])} />
+                                {photo && <img src={URL.createObjectURL(photo)} alt="preview" className="avatar-preview" />}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="form-actions">
+                        <button type="submit" className="btn btn-primary">Register Visitor</button>
+                    </div>
+                </form>
+            </div>
 
             {/* Visitors list */}
-            <h3>All Visitors</h3>
-            <ul>
-                {filtered.map((visitor) => (
-                    <li key={visitor._id} style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px', listStyle: 'none' }}>
-                        {/* show visitor photo if available */}
-                        {visitor.photo && (
-                            <img
-                                src={`http://localhost:5000/uploads/${visitor.photo}`}
-                                alt={visitor.name}
-                                style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '50%' }}
-                            />
-                        )}
-                        <span>{visitor.name} - {visitor.email} - {visitor.status}</span>
-                        {/* show approve/reject only for admin and security */}
-                        {(user?.role === 'admin' || user?.role === 'security') && visitor.status === 'pending' && (
-                            <>
-                                <button onClick={() => handleApprove(visitor._id)}>Approve</button>
-                                <button onClick={() => handleReject(visitor._id)}>Reject</button>
-                            </>
-                        )}
-                    </li>
-                ))}
-            </ul>
+            <div className="section-title">
+                All Visitors <span className="count">({filtered.length})</span>
+            </div>
+
+            {filtered.length === 0 ? (
+                <div className="empty-state">
+                    <IconUsers size={26} style={{ marginBottom: '8px', color: 'var(--text-faint)' }} />
+                    <div>No visitors match your search yet.</div>
+                </div>
+            ) : (
+                <ul className="list">
+                    {filtered.map((visitor) => (
+                        <li key={visitor._id} className="row-card">
+                            {visitor.photo ? (
+                                <img
+                                    src={`http://localhost:5000/uploads/${visitor.photo}`}
+                                    alt={visitor.name}
+                                    className="row-avatar"
+                                    style={{ objectFit: 'cover' }}
+                                />
+                            ) : (
+                                <div className="row-avatar">{visitor.name?.[0]?.toUpperCase()}</div>
+                            )}
+                            <div className="row-body">
+                                <div className="row-title">{visitor.name}</div>
+                                <div className="row-sub">
+                                    {visitor.email}
+                                    <span className={`badge badge-${visitor.status}`}>{visitor.status}</span>
+                                </div>
+                            </div>
+                            {canModerate && visitor.status === 'pending' && (
+                                <div className="row-actions">
+                                    <button className="btn btn-success btn-sm" onClick={() => handleApprove(visitor._id)}>
+                                        <IconCheck size={14} /> Approve
+                                    </button>
+                                    <button className="btn btn-danger btn-sm" onClick={() => handleReject(visitor._id)}>
+                                        <IconX size={14} /> Reject
+                                    </button>
+                                </div>
+                            )}
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 }

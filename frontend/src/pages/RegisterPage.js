@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { IconBadge, IconCheck, IconX } from '../components/Icons';
 
 export default function RegisterPage() {
     const [name, setName] = useState('');
@@ -31,53 +32,34 @@ export default function RegisterPage() {
     };
 
     return (
-        <div style={{ padding: '40px', maxWidth: '400px', margin: '0 auto' }}>
-            <div>
-                <h2 style={{ textAlign: 'center', marginBottom: '24px' }}>Register</h2>
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-                {success && <p style={{ color: 'green' }}>{success}</p>}
+        <div className="auth-wrap">
+            <div className="auth-card">
+                <div className="auth-brand">
+                    <span className="brand-mark"><IconBadge size={18} color="#fff" /></span>
+                    <span>Gatepass</span>
+                </div>
+                <h2>Create your account</h2>
+                <p className="auth-subtitle">Register as a visitor to request appointments</p>
+
+                {error && <div className="alert alert-error"><IconX size={15} /> {error}</div>}
+                {success && <div className="alert alert-success"><IconCheck size={15} /> {success}</div>}
+
                 <form onSubmit={handleRegister}>
-                    <div style={{ marginBottom: '16px' }}>
-                        <label style={{ display: 'block', fontWeight: 'bold' }}>Name</label><br />
-                        <input type='text' value={name} onChange={e => setName(e.target.value)} required style={{
-                            width: '100%',
-                            padding: '10px',
-                            borderRadius: '6px',
-                            border: '1px solid #ccc',
-                            boxSizing: 'border-box'
-                        }} />
+                    <div className="field" style={{ marginBottom: '14px' }}>
+                        <label>Name</label>
+                        <input type="text" placeholder="Full name" value={name} onChange={e => setName(e.target.value)} required />
                     </div>
-                    <div style={{ marginBottom: '20px' }}>
-                        <label style={{ display: 'block', fontWeight: 'bold' }}>Email</label><br />
-                        <input type="email" value={email} onChange={e => setEmail(e.target.value)} required style={{
-                            width: '100%',
-                            padding: '10px',
-                            borderRadius: '6px',
-                            border: '1px solid #ccc',
-                            boxSizing: 'border-box'
-                        }} />
+                    <div className="field" style={{ marginBottom: '14px' }}>
+                        <label>Email</label>
+                        <input type="email" placeholder="you@company.com" value={email} onChange={e => setEmail(e.target.value)} required />
                     </div>
-                    <div style={{ marginBottom: '20px' }}>
-                        <label style={{ display: 'block', fontWeight: 'bold' }}>Password</label><br />
-                        <input type="password" value={password} onChange={e => setPassword(e.target.value)} required style={{
-                            width: '100%',
-                            padding: '10px',
-                            borderRadius: '6px',
-                            border: '1px solid #ccc',
-                            boxSizing: 'border-box'
-                        }} />
+                    <div className="field" style={{ marginBottom: '20px' }}>
+                        <label>Password</label>
+                        <input type="password" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} required />
                     </div>
-                    <button type="submit" style={{
-                        width: '100%',
-                        padding: '10px',
-                        backgroundColor: '#1677ff',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '6px',
-                        fontSize: '16px'
-                    }}>Register</button>
+                    <button type="submit" className="btn btn-primary btn-full">Register</button>
                 </form>
-                <p style={{ textAlign: 'center', marginTop: '16px' }}>Already have an account? <a href="/login">Login</a></p>
+                <p className="auth-footer">Already have an account? <a href="/login">Login</a></p>
             </div>
         </div>
     );

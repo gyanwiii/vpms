@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { IconArrowLeft, IconCalendar, IconCheck, IconX } from '../components/Icons';
 
 export default function Appointment() {
     const [appointments, setAppointments] = useState([]);
@@ -74,37 +75,87 @@ export default function Appointment() {
         fetchAppointments();
     };
 
+    const canModerate = user?.role === 'admin' || user?.role === 'security';
+
     return (
-        <div style={{ padding: '20px' }}>
-            <a href="/dashboard">← Back to Dashboard</a>
-            <h2>Appointments</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+        <div className="page">
+            <a href="/dashboard" className="back-link"><IconArrowLeft size={14} /> Back to Dashboard</a>
 
-            <h3>Create New Appointment</h3>
-            <form onSubmit={handleCreate}>
-                <input placeholder="Visitor Name" value={visitorName} onChange={e => setVisitorName(e.target.value)} required />
-                <input placeholder="Visitor Email" value={visitorEmail} onChange={e => setVisitorEmail(e.target.value)} required />
-                <input placeholder="Visitor Phone" value={visitorPhone} onChange={e => setVisitorPhone(e.target.value)} required />
-                <input placeholder="Purpose" value={purpose} onChange={e => setPurpose(e.target.value)} required />
-                <input type="datetime-local" value={date} onChange={e => setDate(e.target.value)} required />
-                <button type="submit">Create</button>
-            </form>
+            <div className="page-header">
+                <div>
+                    <h1>Appointments</h1>
+                    <p className="page-subtitle">Schedule visits and approve pending requests</p>
+                </div>
+            </div>
 
-            {/* display all appointments */}
-            <h3>All Appointments</h3>
-            <ul>
-                {appointments.map((appt) => (
-                    <li key={appt._id}>
-                        {appt.visitorName} - {appt.purpose} - {appt.status}
-                        {(user?.role === 'admin' || user?.role === 'security') && appt.status === 'pending' && (
-                            <>
-                                <button onClick={() => handleApprove(appt._id)}>Approve</button>
-                                <button onClick={() => handleReject(appt._id)}>Reject</button>
-                            </>
-                        )}
-                    </li>
-                ))}
-            </ul>
+            {/* {error && <div className="alert alert-error"><IconX size={15} /> {error}</div>} */}
+
+            <div className="panel">
+                <div className="section-title">Create New Appointment</div>
+                <form onSubmit={handleCreate}>
+                    <div className="field-grid">
+                        <div className="field">
+                            <label>Visitor Name</label>
+                            <input placeholder="Full name" value={visitorName} onChange={e => setVisitorName(e.target.value)} required />
+                        </div>
+                        <div className="field">
+                            <label>Visitor Email</label>
+                            <input placeholder="visitor@email.com" value={visitorEmail} onChange={e => setVisitorEmail(e.target.value)} required />
+                        </div>
+                        <div className="field">
+                            <label>Visitor Phone</label>
+                            <input placeholder="+91 98765 43210" value={visitorPhone} onChange={e => setVisitorPhone(e.target.value)} required />
+                        </div>
+                        <div className="field">
+                            <label>Purpose</label>
+                            <input placeholder="Reason for visit" value={purpose} onChange={e => setPurpose(e.target.value)} required />
+                        </div>
+                        <div className="field">
+                            <label>Date &amp; Time</label>
+                            <input type="datetime-local" value={date} onChange={e => setDate(e.target.value)} required />
+                        </div>
+                    </div>
+                    <div className="form-actions">
+                        <button type="submit" className="btn btn-primary">Create Appointment</button>
+                    </div>
+                </form>
+            </div>
+
+            <div className="section-title">
+                All Appointments <span className="count">({appointments.length})</span>
+            </div>
+
+            {appointments.length === 0 ? (
+                <div className="empty-state">
+                    <IconCalendar size={26} style={{ marginBottom: '8px', color: 'var(--text-faint)' }} />
+                    <div>No appointments scheduled yet.</div>
+                </div>
+            ) : (
+                <ul className="list">
+                    {appointments.map((appt) => (
+                        <li key={appt._id} className="row-card">
+                            <div className="row-avatar">{appt.visitorName?.[0]?.toUpperCase()}</div>
+                            <div className="row-body">
+                                <div className="row-title">{appt.visitorName}</div>
+                                <div className="row-sub">
+                                    {appt.purpose}
+                                    <span className={`badge badge-${appt.status}`}>{appt.status}</span>
+                                </div>
+                            </div>
+                            {canModerate && appt.status === 'pending' && (
+                                <div className="row-actions">
+                                    <button className="btn btn-success btn-sm" onClick={() => handleApprove(appt._id)}>
+                                        <IconCheck size={14} /> Approve
+                                    </button>
+                                    <button className="btn btn-danger btn-sm" onClick={() => handleReject(appt._id)}>
+                                        <IconX size={14} /> Reject
+                                    </button>
+                                </div>
+                            )}
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 }

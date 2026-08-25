@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { IconArrowLeft, IconBadge, IconX } from '../components/Icons';
 
 // my passes page component
 export default function MyPasses() {
@@ -26,20 +27,43 @@ export default function MyPasses() {
     }, []);
 
     return (
-        <div style={{ padding: '20px' }}>
-            <a href="/dashboard">← Back to Dashboard</a>
-            <h2>My Passes</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <ul>
-                {passes.map(pass => (
-                    <li key={pass._id}>
-                        {pass.passNo} - {pass.status}
-                        {pass.qrCode && (
-                            <img src={pass.qrCode} alt="QR Code" style={{ width: '100px', height: '100px', display: 'block' }} />
-                        )}
-                    </li>
-                ))}
-            </ul>
+        <div className="page">
+            <a href="/dashboard" className="back-link"><IconArrowLeft size={14} /> Back to Dashboard</a>
+
+            <div className="page-header">
+                <div>
+                    <h1>My Passes</h1>
+                    <p className="page-subtitle">Your issued access passes and their status</p>
+                </div>
+            </div>
+
+            {/* {error && <div className="alert alert-error"><IconX size={15} /> {error}</div>} */}
+
+            {passes.length === 0 ? (
+                <div className="empty-state">
+                    <IconBadge size={26} style={{ marginBottom: '8px', color: 'var(--text-faint)' }} />
+                    <div>You don't have any passes yet.</div>
+                </div>
+            ) : (
+                <ul className="list">
+                    {passes.map(pass => (
+                        <li key={pass._id} className="pass-card">
+                            <span className={`pass-stripe badge-${pass.status}`} />
+                            <div className="pass-main">
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                                    <span className="pass-no">{pass.passNo}</span>
+                                    <span className={`badge badge-${pass.status}`}>{pass.status}</span>
+                                </div>
+                            </div>
+                            {pass.qrCode && (
+                                <div className="pass-qr-wrap">
+                                    <img src={pass.qrCode} alt="QR Code" />
+                                </div>
+                            )}
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 }

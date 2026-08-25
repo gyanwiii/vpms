@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
+import { IconArrowLeft, IconBadge, IconX } from '../components/Icons';
 
-//passes management 
+//passes management
 export default function Passes() {
     const [passes, setPasses] = useState([]);
     const [visitorId, setVisitorId] = useState('');
@@ -83,52 +84,81 @@ export default function Passes() {
     };
 
     return (
-        <div style={{ padding: '20px' }}>
-            <a href="/dashboard">← Back to Dashboard</a>
-            <h2>Passes</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+        <div className="page">
+            <a href="/dashboard" className="back-link"><IconArrowLeft size={14} /> Back to Dashboard</a>
 
-            {/* create pass form */}
-            <h3>Issue New Pass</h3>
-            <form onSubmit={handleCreate}>
-                <input
-                    placeholder="Visitor ID"
-                    value={visitorId}
-                    onChange={e => setVisitorId(e.target.value)}
-                    required
-                />
-                <input
-                    type="datetime-local"
-                    value={validDate}
-                    onChange={e => setValidDate(e.target.value)}
-                    required
-                />
-                <button type="submit">Issue Pass</button>
-            </form>
+            <div className="page-header">
+                <div>
+                    <h1>Passes</h1>
+                    <p className="page-subtitle">Issue access passes and track check-ins</p>
+                </div>
+            </div>
 
-            {/* passes list */}
-            <h3>All Passes</h3>
-            <ul>
-                {passes.map((pass) => (
-                    <li key={pass._id}>
-                        {pass.passNo} - {pass.status} -
-                        Checked In: {pass.checkedIn ? 'Yes' : 'No'} -
-                        Checked Out: {pass.checkedOut ? 'Yes' : 'No'}
-                        {pass.qrCode && (
-                            <img src={pass.qrCode} alt="QR Code" style={{ width: '100px', height: '100px' }} />
-                        )}
-                        {!pass.checkedIn && pass.status === 'active' && (
-                            <button onClick={() => handleCheckin(pass._id)}>Check In</button>
-                        )}
-                        {pass.checkedIn && !pass.checkedOut && (
-                            <button onClick={() => handleCheckout(pass._id)}>Check Out</button>
-                        )}
-                        {user?.role === 'admin' && pass.status === 'active' && (
-                            <button onClick={() => handleRevoke(pass._id)}>Revoke</button>
-                        )}
-                    </li>
-                ))}
-            </ul>
+            {/* {error && <div className="alert alert-error"><IconX size={15} /> {error}</div>} */}
+
+            <div className="panel">
+                <div className="section-title">Issue New Pass</div>
+                <form onSubmit={handleCreate}>
+                    <div className="field-grid">
+                        <div className="field">
+                            <label>Visitor ID</label>
+                            <input placeholder="Visitor ID" value={visitorId} onChange={e => setVisitorId(e.target.value)} required />
+                        </div>
+                        <div className="field">
+                            <label>Valid Until</label>
+                            <input type="datetime-local" value={validDate} onChange={e => setValidDate(e.target.value)} required />
+                        </div>
+                    </div>
+                    <div className="form-actions">
+                        <button type="submit" className="btn btn-primary">Issue Pass</button>
+                    </div>
+                </form>
+            </div>
+
+            <div className="section-title">
+                All Passes <span className="count">({passes.length})</span>
+            </div>
+
+            {passes.length === 0 ? (
+                <div className="empty-state">
+                    <IconBadge size={26} style={{ marginBottom: '8px', color: 'var(--text-faint)' }} />
+                    <div>No passes issued yet.</div>
+                </div>
+            ) : (
+                <ul className="list">
+                    {passes.map((pass) => (
+                        <li key={pass._id} className="pass-card">
+                            <span className={`pass-stripe badge-${pass.status}`} />
+                            <div className="pass-main">
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                                    <span className="pass-no">{pass.passNo}</span>
+                                    <span className={`badge badge-${pass.status}`}>{pass.status}</span>
+                                </div>
+                                <div className="pass-meta">
+                                    <span>Checked In: <strong>{pass.checkedIn ? 'Yes' : 'No'}</strong></span>
+                                    <span>Checked Out: <strong>{pass.checkedOut ? 'Yes' : 'No'}</strong></span>
+                                </div>
+                                <div className="pass-actions">
+                                    {!pass.checkedIn && pass.status === 'active' && (
+                                        <button className="btn btn-success btn-sm" onClick={() => handleCheckin(pass._id)}>Check In</button>
+                                    )}
+                                    {pass.checkedIn && !pass.checkedOut && (
+                                        <button className="btn btn-outline btn-sm" onClick={() => handleCheckout(pass._id)}>Check Out</button>
+                                    )}
+                                    {user?.role === 'admin' && pass.status === 'active' && (
+                                        <button className="btn btn-danger btn-sm" onClick={() => handleRevoke(pass._id)}>Revoke</button>
+                                    )}
+                                </div>
+                            </div>
+                            {pass.qrCode && (
+                                <div className="pass-qr-wrap">
+                                    <img src={pass.qrCode} alt="QR Code" />
+                                </div>
+                            )}
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 }

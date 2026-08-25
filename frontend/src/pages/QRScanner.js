@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import jsQR from 'jsqr';
+import { IconArrowLeft, IconCamera, IconScan, IconX } from '../components/Icons';
 
 // QR code scanner page component
 export default function QRScanner() {
@@ -101,54 +102,82 @@ export default function QRScanner() {
     };
 
     return (
-        <div style={{ padding: '20px' }}>
-            <a href="/dashboard">← Back to Dashboard</a>
-            <h2>QR Scanner</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+        <div className="page">
+            <a href="/dashboard" className="back-link"><IconArrowLeft size={14} /> Back to Dashboard</a>
 
-            {/* camera section */}
-            <h3>Scan QR Code</h3>
-            <video ref={videoRef} style={{ width: '300px', display: scanning ? 'block' : 'none' }} />
-            <canvas ref={canvasRef} style={{ display: 'none' }} />
+            <div className="page-header">
+                <div>
+                    <h1>QR Scanner</h1>
+                    <p className="page-subtitle">Scan a visitor pass or enter its number manually</p>
+                </div>
+            </div>
 
-            {!scanning && !passData && (
-                <button onClick={startCamera}>Start Camera</button>
-            )}
-            {scanning && (
-                <button onClick={stopCamera}>Stop Camera</button>
-            )}
+            {error && <div className="alert alert-error"><IconX size={15} /> {error}</div>}
 
-            {/* manual entry fallback */}
-            <h3>Or Enter Pass Number Manually</h3>
-            <input
-                placeholder="Enter pass number e.g. PASS1234567890"
-                value={manualPassNo}
-                onChange={e => setManualPassNo(e.target.value)}
-                style={{ width: '300px', marginRight: '10px' }}
-            />
-            <button onClick={() => lookupPass(manualPassNo)}>Lookup Pass</button>
+            <div className="panel">
+                <div className="section-title"><IconCamera size={16} /> Scan QR Code</div>
 
-            {result && <p>Scanned: {result}</p>}
+                <div className="scanner-frame" style={{ display: scanning ? 'block' : 'none' }}>
+                    <video ref={videoRef} />
+                </div>
+                <canvas ref={canvasRef} style={{ display: 'none' }} />
+                {!scanning && !passData && (
+                    <button className="btn btn-primary" onClick={startCamera}>
+                        <IconCamera size={15} /> Start Camera
+                    </button>
+                )}
+                {scanning && (
+                    <button className="btn btn-outline" onClick={stopCamera}>Stop Camera</button>
+                )}
+            </div>
+
+            <div className="panel">
+                <div className="section-title"><IconScan size={16} /> Or Enter Pass Number Manually</div>
+                <div className="scan-input-row">
+                    <input
+                        placeholder="Enter pass number e.g. PASS1234567890"
+                        value={manualPassNo}
+                        onChange={e => setManualPassNo(e.target.value)}
+                    />
+                    <button className="btn btn-outline" onClick={() => lookupPass(manualPassNo)}>Lookup Pass</button>
+                </div>
+                {result && <p className="page-subtitle" style={{ marginTop: '10px' }}>Scanned: <strong>{result}</strong></p>}
+            </div>
 
             {/* pass details after scan */}
             {passData && (
-                <div>
-                    <h3>Pass Details</h3>
-                    <p>Pass No: {passData.passNo}</p>
-                    <p>Status: {passData.status}</p>
-                    <p>Checked In: {passData.checkedIn ? 'Yes' : 'No'}</p>
-                    <p>Checked Out: {passData.checkedOut ? 'Yes' : 'No'}</p>
+                <div className="panel">
+                    <div className="section-title">Pass Details</div>
+                    <div className="detail-grid">
+                        <div className="detail-item">
+                            <div className="label">Pass No</div>
+                            <div className="value">{passData.passNo}</div>
+                        </div>
+                        <div className="detail-item">
+                            <div className="label">Status</div>
+                            <div className="value"><span className={`badge badge-${passData.status}`}>{passData.status}</span></div>
+                        </div>
+                        <div className="detail-item">
+                            <div className="label">Checked In</div>
+                            <div className="value">{passData.checkedIn ? 'Yes' : 'No'}</div>
+                        </div>
+                        <div className="detail-item">
+                            <div className="label">Checked Out</div>
+                            <div className="value">{passData.checkedOut ? 'Yes' : 'No'}</div>
+                        </div>
+                    </div>
 
-                    {!passData.checkedIn && passData.status === 'active' && (
-                        <button onClick={handleCheckin}>Check In</button>
-                    )}
-                    {passData.checkedIn && !passData.checkedOut && (
-                        <button onClick={handleCheckout}>Check Out</button>
-                    )}
-
-                    <button onClick={() => { setPassData(null); setResult(''); setManualPassNo(''); }}>
-                        Scan Another
-                    </button>
+                    <div className="pass-actions">
+                        {!passData.checkedIn && passData.status === 'active' && (
+                            <button className="btn btn-success btn-sm" onClick={handleCheckin}>Check In</button>
+                        )}
+                        {passData.checkedIn && !passData.checkedOut && (
+                            <button className="btn btn-outline btn-sm" onClick={handleCheckout}>Check Out</button>
+                        )}
+                        <button className="btn btn-ghost btn-sm" onClick={() => { setPassData(null); setResult(''); setManualPassNo(''); }}>
+                            Scan Another
+                        </button>
+                    </div>
                 </div>
             )}
         </div>

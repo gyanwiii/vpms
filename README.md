@@ -2,8 +2,6 @@
 
 A MERN stack application to manage visitor passes digitally.
 
-## Video Description Link:- https://drive.google.com/file/d/1yJX1js8bZ8gCEgaPsaNl3m8NXbsKepQw/view?usp=sharing
-
 ## Setup Instructions
 
 ### Backend

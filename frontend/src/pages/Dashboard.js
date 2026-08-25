@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { IconUsers, IconCalendar, IconBadge, IconX } from '../components/Icons';
 
 export default function Dashboard() {
     const [summary, setSummary] = useState(null);
@@ -36,13 +37,37 @@ export default function Dashboard() {
     };
 
     return (
-        <div style={{ padding: '20px' }}>
+        <div className="page">
+            <div className="hero-band">
+                <h1>Welcome back, {user?.name?.split(' ')[0] || 'there'} 👋</h1>
+                <p>Here's what's happening across visitors, appointments and passes today.</p>
+            </div>
+
+            {/* {error && <div className="alert alert-error"><IconX size={15} /> {error}</div>} */}
+
             {summary && (
-                <div>
-                    <h3>Summary</h3>
-                    <p>Total Visitors: {summary.totalVisitors}</p>
-                    <p>Total Appointments: {summary.totalAppointments}</p>
-                    <p>Total Passes: {summary.totalPasses}</p>
+                <div className="stat-grid">
+                    <div className="stat-card">
+                        <span className="stat-icon blue"><IconUsers size={22} /></span>
+                        <div>
+                            <div className="stat-value">{summary.totalVisitors}</div>
+                            <div className="stat-label">Total Visitors</div>
+                        </div>
+                    </div>
+                    <div className="stat-card">
+                        <span className="stat-icon amber"><IconCalendar size={22} /></span>
+                        <div>
+                            <div className="stat-value">{summary.totalAppointments}</div>
+                            <div className="stat-label">Total Appointments</div>
+                        </div>
+                    </div>
+                    <div className="stat-card">
+                        <span className="stat-icon green"><IconBadge size={22} /></span>
+                        <div>
+                            <div className="stat-value">{summary.totalPasses}</div>
+                            <div className="stat-label">Total Passes</div>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { IconArrowLeft, IconUsers, IconCalendar, IconBadge, IconDownload } from '../components/Icons';
 
 // reports page component
 export default function Reports() {
@@ -81,37 +82,83 @@ export default function Reports() {
         a.click();
     };
 
-    return (
-        <div style={{ padding: '20px' }}>
-            <a href="/dashboard">← Back to Dashboard</a>
-            <h2>Reports</h2>
+    const tabs = [
+        { id: 'summary', label: 'Summary' },
+        { id: 'visitors', label: 'Visitors' },
+        { id: 'passes', label: 'Passes' },
+        { id: 'appointments', label: 'Appointments' }
+    ];
 
-            {/* tabs */}
-            <div>
-                <button onClick={() => handleTab('summary')}>Summary</button>
-                <button onClick={() => handleTab('visitors')}>Visitors</button>
-                <button onClick={() => handleTab('passes')}>Passes</button>
-                <button onClick={() => handleTab('appointments')}>Appointments</button>
+    return (
+        <div className="page">
+            <a href="/dashboard" className="back-link"><IconArrowLeft size={14} /> Back to Dashboard</a>
+
+            <div className="page-header">
+                <div>
+                    <h1>Reports</h1>
+                    <p className="page-subtitle">Review activity and export data as CSV</p>
+                </div>
+            </div>
+
+            <div className="tab-row">
+                {tabs.map(t => (
+                    <button
+                        key={t.id}
+                        className={`tab-btn ${activeTab === t.id ? 'active' : ''}`}
+                        onClick={() => handleTab(t.id)}
+                    >
+                        {t.label}
+                    </button>
+                ))}
             </div>
 
             {/* summary tab */}
             {activeTab === 'summary' && summary && (
-                <div>
-                    <h3>Summary</h3>
-                    <p>Total Visitors: {summary.totalVisitors}</p>
-                    <p>Total Passes: {summary.totalPasses}</p>
-                    <p>Total Appointments: {summary.totalAppointments}</p>
+                <div className="stat-grid">
+                    <div className="stat-card">
+                        <span className="stat-icon blue"><IconUsers size={22} /></span>
+                        <div>
+                            <div className="stat-value">{summary.totalVisitors}</div>
+                            <div className="stat-label">Total Visitors</div>
+                        </div>
+                    </div>
+                    <div className="stat-card">
+                        <span className="stat-icon green"><IconBadge size={22} /></span>
+                        <div>
+                            <div className="stat-value">{summary.totalPasses}</div>
+                            <div className="stat-label">Total Passes</div>
+                        </div>
+                    </div>
+                    <div className="stat-card">
+                        <span className="stat-icon amber"><IconCalendar size={22} /></span>
+                        <div>
+                            <div className="stat-value">{summary.totalAppointments}</div>
+                            <div className="stat-label">Total Appointments</div>
+                        </div>
+                    </div>
                 </div>
             )}
 
             {/* visitors tab */}
             {activeTab === 'visitors' && (
                 <div>
-                    <h3>Visitors ({visitors.length})</h3>
-                    <button onClick={() => exportCSV(visitors, 'visitors.csv')}>Export CSV</button>
-                    <ul>
+                    <div className="tab-panel-header">
+                        <div className="section-title" style={{ marginBottom: 0 }}>
+                            Visitors <span className="count">({visitors.length})</span>
+                        </div>
+                        <button className="btn btn-outline btn-sm" onClick={() => exportCSV(visitors, 'visitors.csv')}>
+                            <IconDownload size={14} /> Export CSV
+                        </button>
+                    </div>
+                    <ul className="list">
                         {visitors.map(v => (
-                            <li key={v._id}>{v.name} - {v.email} - {v.status}</li>
+                            <li key={v._id} className="row-card">
+                                <div className="row-avatar">{v.name?.[0]?.toUpperCase()}</div>
+                                <div className="row-body">
+                                    <div className="row-title">{v.name}</div>
+                                    <div className="row-sub">{v.email} <span className={`badge badge-${v.status}`}>{v.status}</span></div>
+                                </div>
+                            </li>
                         ))}
                     </ul>
                 </div>
@@ -120,11 +167,23 @@ export default function Reports() {
             {/* passes tab */}
             {activeTab === 'passes' && (
                 <div>
-                    <h3>Passes ({passes.length})</h3>
-                    <button onClick={() => exportCSV(passes, 'passes.csv')}>Export CSV</button>
-                    <ul>
+                    <div className="tab-panel-header">
+                        <div className="section-title" style={{ marginBottom: 0 }}>
+                            Passes <span className="count">({passes.length})</span>
+                        </div>
+                        <button className="btn btn-outline btn-sm" onClick={() => exportCSV(passes, 'passes.csv')}>
+                            <IconDownload size={14} /> Export CSV
+                        </button>
+                    </div>
+                    <ul className="list">
                         {passes.map(p => (
-                            <li key={p._id}>{p.passNo} - {p.status}</li>
+                            <li key={p._id} className="row-card">
+                                <div className="row-avatar"><IconBadge size={16} /></div>
+                                <div className="row-body">
+                                    <div className="row-title" style={{ fontFamily: 'var(--font-mono)', fontSize: '13px' }}>{p.passNo}</div>
+                                    <div className="row-sub"><span className={`badge badge-${p.status}`}>{p.status}</span></div>
+                                </div>
+                            </li>
                         ))}
                     </ul>
                 </div>
@@ -133,11 +192,23 @@ export default function Reports() {
             {/* appointments tab */}
             {activeTab === 'appointments' && (
                 <div>
-                    <h3>Appointments ({appointments.length})</h3>
-                    <button onClick={() => exportCSV(appointments, 'appointments.csv')}>Export CSV</button>
-                    <ul>
+                    <div className="tab-panel-header">
+                        <div className="section-title" style={{ marginBottom: 0 }}>
+                            Appointments <span className="count">({appointments.length})</span>
+                        </div>
+                        <button className="btn btn-outline btn-sm" onClick={() => exportCSV(appointments, 'appointments.csv')}>
+                            <IconDownload size={14} /> Export CSV
+                        </button>
+                    </div>
+                    <ul className="list">
                         {appointments.map(a => (
-                            <li key={a._id}>{a.visitorName} - {a.purpose} - {a.status}</li>
+                            <li key={a._id} className="row-card">
+                                <div className="row-avatar">{a.visitorName?.[0]?.toUpperCase()}</div>
+                                <div className="row-body">
+                                    <div className="row-title">{a.visitorName}</div>
+                                    <div className="row-sub">{a.purpose} <span className={`badge badge-${a.status}`}>{a.status}</span></div>
+                                </div>
+                            </li>
                         ))}
                     </ul>
                 </div>
