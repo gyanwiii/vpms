@@ -166,7 +166,6 @@ export default function QRScanner() {
                             <div className="value">{passData.checkedOut ? 'Yes' : 'No'}</div>
                         </div>
                     </div>
-
                     <div className="pass-actions">
                         {!passData.checkedIn && passData.status === 'active' && (
                             <button className="btn btn-success btn-sm" onClick={handleCheckin}>Check In</button>

@@ -241,9 +241,6 @@ input:focus, select:focus {
     box-shadow: 0 0 0 1px var(--border);
 }
 
-/* ---------------------------------------------------------
-   BUTTONS
---------------------------------------------------------- */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -330,9 +327,6 @@ input:focus, select:focus {
     border-radius: var(--radius-sm);
 }
 
-/* ---------------------------------------------------------
-   BADGES / STATUS PILLS
---------------------------------------------------------- */
 .badge {
     display: inline-flex;
     align-items: center;

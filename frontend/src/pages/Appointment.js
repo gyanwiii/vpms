@@ -16,7 +16,6 @@ export default function Appointment() {
         fetchAppointments();
     }, []);
 
-    // fetch all appointments from backend
     const fetchAppointments = async () => {
         try {
             const res = await fetch('http://localhost:5000/api/appointments', {
@@ -33,7 +32,6 @@ export default function Appointment() {
         }
     };
 
-    // create new appointment
     const handleCreate = async (e) => {
         e.preventDefault();
         try {
@@ -57,7 +55,6 @@ export default function Appointment() {
         }
     };
 
-    // approve appointment
     const handleApprove = async (id) => {
         await fetch(`http://localhost:5000/api/appointments/${id}/approve`, {
             method: 'PUT',
@@ -66,7 +63,6 @@ export default function Appointment() {
         fetchAppointments();
     };
 
-    // reject appointment
     const handleReject = async (id) => {
         await fetch(`http://localhost:5000/api/appointments/${id}/reject`, {
             method: 'PUT',

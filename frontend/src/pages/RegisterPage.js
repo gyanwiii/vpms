@@ -10,6 +10,7 @@ export default function RegisterPage() {
     const [success, setSuccess] = useState('');
     const navigate = useNavigate();
 
+    // register
     const handleRegister = async (e) => {
         e.preventDefault();
         setError('');

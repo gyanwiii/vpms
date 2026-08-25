@@ -43,8 +43,6 @@ export default function Dashboard() {
                 <p>Here's what's happening across visitors, appointments and passes today.</p>
             </div>
 
-            {/* {error && <div className="alert alert-error"><IconX size={15} /> {error}</div>} */}
-
             {summary && (
                 <div className="stat-grid">
                     <div className="stat-card">

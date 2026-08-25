@@ -94,8 +94,6 @@ export default function Passes() {
                 </div>
             </div>
 
-            {/* {error && <div className="alert alert-error"><IconX size={15} /> {error}</div>} */}
-
             <div className="panel">
                 <div className="section-title">Issue New Pass</div>
                 <form onSubmit={handleCreate}>

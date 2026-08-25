@@ -1,6 +1,3 @@
-// Small hand-picked icon set so the app doesn't need an extra dependency.
-// Each icon accepts a `size` prop (defaults to 18) and forwards other props (e.g. className).
-
 const base = (size) => ({
     width: size,
     height: size,

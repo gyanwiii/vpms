@@ -31,12 +31,6 @@ const LoginPage = () => {
                 <h2>Welcome back</h2>
                 <p className="auth-subtitle">Sign in to manage visitors and access passes</p>
 
-                {/* {error && (
-                    <div className="alert alert-error">
-                        <IconX size={15} /> {error}
-                    </div>
-                )} */}
-
                 <form onSubmit={handleSubmit}>
                     <div className="field" style={{ marginBottom: '14px' }}>
                         <label><IconMail size={13} style={{ verticalAlign: '-2px', marginRight: '4px' }} />Email</label>

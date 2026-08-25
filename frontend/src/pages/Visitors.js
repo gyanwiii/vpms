@@ -117,8 +117,6 @@ export default function Visitors() {
                 </div>
             </div>
 
-            {/* {error && <div className="alert alert-error"><IconX size={15} /> {error}</div>} */}
-
             {/* Register form */}
             <div className="panel">
                 <div className="section-title">Register New Visitor</div>

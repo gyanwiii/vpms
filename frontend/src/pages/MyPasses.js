@@ -37,7 +37,6 @@ export default function MyPasses() {
                 </div>
             </div>
 
-            {/* {error && <div className="alert alert-error"><IconX size={15} /> {error}</div>} */}
 
             {passes.length === 0 ? (
                 <div className="empty-state">

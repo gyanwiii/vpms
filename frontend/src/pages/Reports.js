@@ -112,7 +112,6 @@ export default function Reports() {
                 ))}
             </div>
 
-            {/* summary tab */}
             {activeTab === 'summary' && summary && (
                 <div className="stat-grid">
                     <div className="stat-card">
@@ -139,7 +138,6 @@ export default function Reports() {
                 </div>
             )}
 
-            {/* visitors tab */}
             {activeTab === 'visitors' && (
                 <div>
                     <div className="tab-panel-header">
@@ -164,7 +162,6 @@ export default function Reports() {
                 </div>
             )}
 
-            {/* passes tab */}
             {activeTab === 'passes' && (
                 <div>
                     <div className="tab-panel-header">
@@ -189,7 +186,6 @@ export default function Reports() {
                 </div>
             )}
 
-            {/* appointments tab */}
             {activeTab === 'appointments' && (
                 <div>
                     <div className="tab-panel-header">
