@@ -11,7 +11,7 @@ export const useSignup = () => {
         setIsLoading(true);
         setError(null);
 
-        const res = await fetch('http://visitor-pass-management-9jme.onrender.com/api/auth/register', {
+        const res = await fetch('https://visitor-pass-management-9jme.onrender.com/api/auth/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, email, password, role })

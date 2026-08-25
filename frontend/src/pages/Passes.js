@@ -17,7 +17,7 @@ export default function Passes() {
     // fetch all passes from backend
     const fetchPasses = async () => {
         try {
-            const res = await fetch('http://visitor-pass-management-9jme.onrender.com/api/passes', {
+            const res = await fetch('https://visitor-pass-management-9jme.onrender.com/api/passes', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const data = await res.json();
@@ -35,7 +35,7 @@ export default function Passes() {
     const handleCreate = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch('http://visitor-pass-management-9jme.onrender.com/api/passes', {
+            const res = await fetch('https://visitor-pass-management-9jme.onrender.com/api/passes', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ export default function Passes() {
 
     // check-in pass
     const handleCheckin = async (id) => {
-        await fetch(`http://visitor-pass-management-9jme.onrender.com/api/passes/${id}/checkin`, {
+        await fetch(`https://visitor-pass-management-9jme.onrender.com/api/passes/${id}/checkin`, {
             method: 'PUT',
             headers: { Authorization: `Bearer ${token}` }
         });
@@ -67,7 +67,7 @@ export default function Passes() {
 
     // check-out pass
     const handleCheckout = async (id) => {
-        await fetch(`http://visitor-pass-management-9jme.onrender.com/api/passes/${id}/checkout`, {
+        await fetch(`https://visitor-pass-management-9jme.onrender.com/api/passes/${id}/checkout`, {
             method: 'PUT',
             headers: { Authorization: `Bearer ${token}` }
         });
@@ -76,7 +76,7 @@ export default function Passes() {
 
     // revoke pass (admin only)
     const handleRevoke = async (id) => {
-        await fetch(`http://visitor-pass-management-9jme.onrender.com/api/passes/${id}/revoke`, {
+        await fetch(`https://visitor-pass-management-9jme.onrender.com/api/passes/${id}/revoke`, {
             method: 'PUT',
             headers: { Authorization: `Bearer ${token}` }
         });
